@@ -14,8 +14,7 @@ public class MainFrame extends JFrame {
     private final PainelVariacaoDelta painelVariacaoDelta = new PainelVariacaoDelta();
     private final PainelValorOriginal painelValorOriginal = new PainelValorOriginal();
     private final PainelRegraDeTres   painelRegraDeTres   = new PainelRegraDeTres();
-    private final PainelDiferencaDatas painelDiferencaDatas = new PainelDiferencaDatas();
-    private final PainelSomarDias     painelSomarDias     = new PainelSomarDias();
+    private final PainelGeradorSenha  painelGeradorSenha  = new PainelGeradorSenha();
 
     public MainFrame() {
         limparTudo();
@@ -79,10 +78,9 @@ public class MainFrame extends JFrame {
         linha2.add(pnlBotao, g);
 
         // ── Linha 3: Regra de três + Datas ────────────────────────────────
-        JPanel linha3 = new JPanel(new GridLayout(1, 3, 6, 6));
+        JPanel linha3 = new JPanel(new GridLayout(1, 2, 6, 6));
         linha3.add(painelRegraDeTres);
-        linha3.add(painelDiferencaDatas);
-        linha3.add(painelSomarDias);
+        linha3.add(painelGeradorSenha);
 
         // ── Empilha as linhas ─────────────────────────────────────────────
         JPanel centro = new JPanel();
@@ -106,7 +104,6 @@ public class MainFrame extends JFrame {
         painelVariacaoDelta.limpar();
         painelValorOriginal.limpar();
         painelRegraDeTres.limpar();
-        painelDiferencaDatas.limpar();
-        painelSomarDias.limpar();
+        painelGeradorSenha.limpar();
     }
 }

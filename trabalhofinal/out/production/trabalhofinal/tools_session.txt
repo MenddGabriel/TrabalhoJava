@@ -1,2 +1,0 @@
-usuario=adm
-senha=adm

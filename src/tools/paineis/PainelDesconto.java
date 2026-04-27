@@ -1,5 +1,7 @@
 package tools.paineis;
 
+import tools.utils.Calculos;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -18,15 +20,17 @@ public class PainelDesconto extends JPanel {
         gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = GridBagConstraints.EAST;
         add(label("Valor inicial R$ (a)", Color.RED), gbc);
         gbc.gridx = 1; gbc.anchor = GridBagConstraints.WEST;
+        txtA.setBackground(new Color(255, 200, 200));
         add(txtA, gbc);
 
         // Linha 2: % desconto
         gbc.gridx = 0; gbc.gridy = 1; gbc.anchor = GridBagConstraints.EAST;
-        add(label("% desconto (b)", Color.RED), gbc);
+        add(label("% desconto (b)", Color.BLUE), gbc);
         gbc.gridx = 1; gbc.anchor = GridBagConstraints.WEST;
         JPanel pnlB = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
         pnlB.add(txtB);
         pnlB.add(new JLabel("%"));
+        txtB.setBackground(new Color(200, 220, 255));
         add(pnlB, gbc);
 
         // Linha 3: Resultado
@@ -37,8 +41,11 @@ public class PainelDesconto extends JPanel {
         add(txtResultado, gbc);
 
         // Linha 4: Fórmula
-        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.WEST;
-
+        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
+        JLabel formula = new JLabel("v = a - (a * (b / 100))");
+        formula.setFont(new Font("Monospaced", Font.ITALIC, 11));
+        formula.setForeground(Color.BLUE);
+        add(formula, gbc);
 
         // Listeners
         DocumentAdapter calc = e -> calcular();

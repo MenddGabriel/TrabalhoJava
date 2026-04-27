@@ -1,31 +1,35 @@
 package tools.paineis;
 
+import tools.utils.Calculos;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class PainelAmostragem2 extends JPanel {
-    private final JTextField txtA = new JTextField("200,00", 10);
-    private final JTextField txtB = new JTextField("0,00", 10);
-    private final JTextField txtResultado = new JTextField("0,00", 10);
+public class PainelVariacaoDelta extends JPanel {
+    private final JTextField txtA = new JTextField("700,00", 10);
+    private final JTextField txtB = new JTextField("40,00", 10);
+    private final JTextField txtResultado = new JTextField("-94,29", 10);
 
-    public PainelAmostragem2() {
-        setBorder(BorderFactory.createTitledBorder("Amostragem 2 - Quanto X representa de Y"));
+    public PainelVariacaoDelta() {
+        setBorder(BorderFactory.createTitledBorder("Variação Delta (%) - diferença % entre valores"));
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(4, 6, 4, 6);
 
         gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = GridBagConstraints.EAST;
-        add(label("Total (a)", Color.RED), gbc);
+        add(label("Valor inicial (a)", Color.RED), gbc);
         gbc.gridx = 1; gbc.anchor = GridBagConstraints.WEST;
+        txtA.setBackground(new Color(255, 200, 200));
         add(txtA, gbc);
 
         gbc.gridx = 0; gbc.gridy = 1; gbc.anchor = GridBagConstraints.EAST;
-        add(label("Parte (b)", Color.RED), gbc);
+        add(label("Valor final (b)", Color.BLUE), gbc);
         gbc.gridx = 1; gbc.anchor = GridBagConstraints.WEST;
+        txtB.setBackground(new Color(200, 220, 255));
         add(txtB, gbc);
 
         gbc.gridx = 0; gbc.gridy = 2; gbc.anchor = GridBagConstraints.EAST;
-        add(label("Corresponde a %", Color.BLACK), gbc);
+        add(label("Diferença %", Color.BLACK), gbc);
         gbc.gridx = 1; gbc.anchor = GridBagConstraints.WEST;
         JPanel pnlR = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
         txtResultado.setEditable(false);
@@ -33,8 +37,11 @@ public class PainelAmostragem2 extends JPanel {
         pnlR.add(new JLabel("%"));
         add(pnlR, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.WEST;
-
+        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
+        JLabel formula = new JLabel("v = ((b - a) / a) * 100");
+        formula.setFont(new Font("Monospaced", Font.ITALIC, 11));
+        formula.setForeground(Color.BLUE);
+        add(formula, gbc);
 
         DocumentAdapter calc = e -> calcular();
         txtA.getDocument().addDocumentListener(calc);
@@ -45,7 +52,7 @@ public class PainelAmostragem2 extends JPanel {
         try {
             double a = Double.parseDouble(txtA.getText().replace(",", "."));
             double b = Double.parseDouble(txtB.getText().replace(",", "."));
-            txtResultado.setText(String.format("%.2f", Calculos.amostragem2(a, b)).replace(".", ","));
+            txtResultado.setText(String.format("%.2f", Calculos.variacaoDelta(a, b)).replace(".", ","));
         } catch (NumberFormatException ignored) {
             txtResultado.setText("");
         }

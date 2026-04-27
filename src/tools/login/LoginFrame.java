@@ -8,8 +8,11 @@ import java.nio.file.*;
 public class LoginFrame extends JFrame {
 
     // ── Credenciais válidas ────────────────────────────────────────────────
-    private static final String USUARIO_VALIDO = "adm";
-    private static final String SENHA_VALIDA   = "adm";
+    private static final String[][] CREDENCIAIS_VALIDAS = {
+            {"Administrador", "Administrador"},
+            {"Adm", "Adm"},
+            {"Administrador", "pr4frente0rever"}
+    };
 
     // ── Arquivo de sessão (o "cookie" em .txt) ────────────────────────────
     private static final Path SESSION_FILE = Paths.get(
@@ -26,27 +29,38 @@ public class LoginFrame extends JFrame {
         });
     }
 
+    private static boolean validarCredenciais(String usuario, String senha) {
+        // Valida campos em branco
+        if (usuario == null || usuario.trim().isEmpty() ||
+                senha == null || senha.trim().isEmpty()) {
+            return false;
+        }
+
+        // Compara com todas as credenciais válidas
+        for (String[] cred : CREDENCIAIS_VALIDAS) {
+            if (cred[0].equals(usuario) && cred[1].equals(senha)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // ── Lê o usuário salvo no cookie (ou null se não existir) ─────────────
-    private static String[] lerSessaoSalva() {
+    private static String lerSessaoSalva() {
         if (!Files.exists(SESSION_FILE)) return null;
         try {
-            String[] linhas = Files.readString(SESSION_FILE).split("\n");
-            if (linhas.length >= 2) {
-                String usuario = linhas[0].replace("usuario=", "").trim();
-                String senha   = linhas[1].replace("senha=",   "").trim();
-                return new String[]{usuario, senha};
+            String conteudo = Files.readString(SESSION_FILE).trim();
+            if (!conteudo.isEmpty()) {
+                return conteudo;
             }
         } catch (IOException ignored) {}
         return null;
     }
 
     // ── Salva o "cookie" no disco ─────────────────────────────────────────
-    private static void salvarSessao(String usuario, String senha) {
+    private static void salvarSessao(String usuario) {
         try {
-            Files.writeString(SESSION_FILE,
-                    "usuario=" + usuario + "\n" +
-                            "senha="   + senha
-            );
+            Files.writeString(SESSION_FILE, usuario);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null,
                     "Não foi possível salvar a sessão:\n" + e.getMessage(),
@@ -106,7 +120,7 @@ public class LoginFrame extends JFrame {
         painel.add(campoSenha, g);
 
         // ── Lembrar sessão ────────────────────────────────────────────────
-        JCheckBox chkLembrar = new JCheckBox("Lembrar acesso neste computador");
+        JCheckBox chkLembrar = new JCheckBox("Lembrar usuário");
         g.gridx = 0; g.gridy = 3; g.gridwidth = 2;
         painel.add(chkLembrar, g);
 
@@ -124,10 +138,9 @@ public class LoginFrame extends JFrame {
         painel.add(btnEntrar, g);
 
         // ── Preenche campos se cookie existir ─────────────────────────────
-        String[] sessao = lerSessaoSalva();
+        String sessao = lerSessaoSalva();
         if (sessao != null) {
-            campoUsuario.setText(sessao[0]);
-            campoSenha.setText(sessao[1]);
+            campoUsuario.setText(sessao);
             chkLembrar.setSelected(true);
             btnEntrar.requestFocusInWindow();
         } else {
@@ -139,9 +152,22 @@ public class LoginFrame extends JFrame {
             String usuario = campoUsuario.getText().trim();
             String senha   = new String(campoSenha.getPassword()).trim();
 
-            if (usuario.equals(USUARIO_VALIDO) && senha.equals(SENHA_VALIDA)) {
+            if (usuario.isEmpty()) {
+                lblErro.setText("Usuário não pode estar em branco.");
+                campoUsuario.requestFocus();
+                return;
+            }
+
+            if (senha.isEmpty()) {
+                lblErro.setText("Senha não pode estar em branco.");
+                campoSenha.requestFocus();
+                return;
+            }
+
+
+            if (validarCredenciais(usuario, senha)) {
                 if (chkLembrar.isSelected()) {
-                    salvarSessao(usuario, senha);
+                    salvarSessao(usuario);
                 } else {
                     encerrarSessao();
                 }

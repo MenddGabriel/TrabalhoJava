@@ -1,9 +1,13 @@
-package tools.paineis;
+package tools.utils;
 
 /**
  * Classe responsável por todos os cálculos da aplicação Tools.
  */
-public class Calculos {
+public final class Calculos {
+
+    private Calculos() {
+        throw new UnsupportedOperationException("Classe utilitária não pode ser instanciada");
+    }
 
     // ── Aplicar desconto % num valor ──────────────────────────────────────────
     /** v = a - (a * (b / 100)) */
@@ -58,15 +62,18 @@ public class Calculos {
         return (r1 * b) / a;
     }
 
-    // ── Diferença entre datas ─────────────────────────────────────────────────
-    /** Retorna a diferença em dias entre duas datas (data2 - data1) */
-    public static long diferencaEntreDatas(java.time.LocalDate data1, java.time.LocalDate data2) {
-        return java.time.temporal.ChronoUnit.DAYS.between(data1, data2);
+    public static int soma(int x, int y) {
+        return x + y;
     }
 
-    // ── Somar dias a uma data ─────────────────────────────────────────────────
-    /** Retorna a data resultante após somar (ou subtrair) dias */
-    public static java.time.LocalDate somarDias(java.time.LocalDate dataInicio, int dias) {
-        return dataInicio.plusDays(dias);
+    public static double soma(double x, double y) {
+        return x + y;
     }
+
+    public static String soma(String x, String y) {
+        return x + y;
+    }
+
+
+
 }
