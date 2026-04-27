@@ -1,5 +1,7 @@
 package tools.paineis;
 
+import tools.utils.Calculos;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,14 +19,16 @@ public class PainelAmostragem extends JPanel {
         gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = GridBagConstraints.EAST;
         add(label("Total (a)", Color.RED), gbc);
         gbc.gridx = 1; gbc.anchor = GridBagConstraints.WEST;
+        txtA.setBackground(new Color(255, 200, 200));
         add(txtA, gbc);
 
         gbc.gridx = 0; gbc.gridy = 1; gbc.anchor = GridBagConstraints.EAST;
-        add(label("Porcentagem (b)", Color.RED), gbc);
+        add(label("Porcentagem (b)", Color.BLUE), gbc);
         gbc.gridx = 1; gbc.anchor = GridBagConstraints.WEST;
         JPanel pnlB = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
         pnlB.add(txtB);
         pnlB.add(new JLabel("%"));
+        txtB.setBackground(new Color(200, 220, 255));
         add(pnlB, gbc);
 
         gbc.gridx = 0; gbc.gridy = 2; gbc.anchor = GridBagConstraints.EAST;
@@ -33,7 +37,11 @@ public class PainelAmostragem extends JPanel {
         txtResultado.setEditable(false);
         add(txtResultado, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
+        JLabel formula = new JLabel("v = (a * b) / 100");
+        formula.setFont(new Font("Monospaced", Font.ITALIC, 11));
+        formula.setForeground(Color.BLUE);
+        add(formula, gbc);
 
 
         DocumentAdapter calc = e -> calcular();
